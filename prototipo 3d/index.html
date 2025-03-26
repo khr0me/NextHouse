@@ -1,0 +1,183 @@
+</html><!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa 3D Olografica Avanzata</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Loader iniziale -->
+<div class="loader-container" id="loader">
+    <div class="loader"></div>
+    <div class="loader-text">Caricamento prototipo olografico...</div>
+    <div class="loader-progress">
+        <div class="loader-bar" id="loaderBar"></div>
+    </div>
+</div>
+
+<!-- Header -->
+<header>
+    <h1>PROTOTIPO CASA 3D OLOGRAFICA</h1>
+    <div class="subtitle">Sistema di visualizzazione interattivo avanzato</div>
+</header>
+
+<!-- Contenitore principale -->
+<div class="main-container">
+    <!-- Griglia di sfondo -->
+    <div class="grid-background"></div>
+    
+    <!-- Effetto vignetta -->
+    <div class="vignette"></div>
+    
+    <!-- Effetto rumore -->
+    <div class="noise"></div>
+    
+    <!-- Scanline -->
+    <div class="scanline"></div>
+    
+    <!-- HUD con statistiche -->
+    <div class="hud" id="hud">
+        <div class="hud-toggle" id="hudToggle">≡</div>
+        <h3>Statistiche Sistema <span id="hudStatus">Online</span></h3>
+        <div class="hud-stat">
+            <div class="hud-stat-label">Tempo renderizzazione:</div>
+            <div class="hud-stat-value">28.4 ms</div>
+        </div>
+        <div class="hud-stat">
+            <div class="hud-stat-label">FPS:</div>
+            <div class="hud-stat-value" id="fpsCounter">60</div>
+        </div>
+        <div class="hud-stat">
+            <div class="hud-stat-label">Memoria utilizzata:</div>
+            <div class="hud-stat-value">124.8 MB</div>
+        </div>
+        <div class="hud-stat">
+            <div class="hud-stat-label">Temperatura:</div>
+            <div class="hud-stat-value">22.6°C</div>
+        </div>
+        <div class="hud-stat">
+            <div class="hud-stat-label">Consumo energia:</div>
+            <div class="hud-stat-value">0.45 kWh</div>
+        </div>
+        <div class="hud-stat">
+            <div class="hud-stat-label">Qualità aria:</div>
+            <div class="hud-stat-value">Ottimale</div>
+        </div>
+        
+        <h3 style="margin-top: 10px;">Impostazioni</h3>
+        <div class="toggle-container">
+            <label class="toggle-switch">
+                <input type="checkbox" id="effectsToggle" checked>
+                <span class="toggle-slider"></span>
+            </label>
+            <div class="toggle-label">Effetti visivi</div>
+        </div>
+        <div class="toggle-container">
+            <label class="toggle-switch">
+                <input type="checkbox" id="labelsToggle">
+                <span class="toggle-slider"></span>
+            </label>
+            <div class="toggle-label">Mostra etichette punti</div>
+        </div>
+        <div class="toggle-container">
+            <label class="toggle-switch">
+                <input type="checkbox" id="autoRotateToggle">
+                <span class="toggle-slider"></span>
+            </label>
+            <div class="toggle-label">Rotazione automatica</div>
+        </div>
+    </div>
+    
+    <!-- Contenitore ologramma -->
+    <div class="hologram-container" id="hologramContainer">
+        <!-- Effetto linee ologramma -->
+        <div class="hologram-lines"></div>
+        
+        <!-- Ologramma -->
+        <div class="hologram" id="hologram">
+            <!-- Base ologramma -->
+            <div class="hologram-base">
+                <div class="base-circle"></div>
+                <div class="base-glow"></div>
+            </div>
+            
+            <!-- Casa -->
+            <div class="house">
+                <!-- Struttura base -->
+                <div class="wall floor"></div>
+                <div class="wall wall-front"></div>
+                <div class="wall wall-back"></div>
+                <div class="wall wall-left"></div>
+                <div class="wall wall-right"></div>
+                <div class="wall roof-front"></div>
+                <div class="wall roof-back"></div>
+                <div class="solar-panel"></div>
+                
+                <!-- Dettagli casa -->
+                <div class="door"></div>
+                <div class="window window-front-left"></div>
+                <div class="window window-front-right"></div>
+                <div class="window window-left"></div>
+                <div class="window window-right"></div>
+                <div class="window window-back-left"></div>
+                <div class="window window-back-right"></div>
+                <div class="garden"></div>
+                <div class="tree-trunk"></div>
+                <div class="tree-top"></div>
+                <div class="garage"></div>
+                <div class="garage-door"></div>
+                <div class="pool"></div>
+                
+                <!-- Punti informativi -->
+                <div class="info-point point-door" id="point1" data-id="doorSystem"></div>
+                <div class="point-label" style="transform: translateX(-40px) translateY(10px) translateZ(205px);">Porta Smart</div>
+                
+                <div class="info-point point-window" id="point2" data-id="windowSystem"></div>
+                <div class="point-label" style="transform: translateX(110px) translateY(-20px) translateZ(205px);">Finestra Intelligente</div>
+                
+                <div class="info-point point-roof" id="point3" data-id="roofSystem"></div>
+                <div class="point-label" style="transform: translateX(60px) translateY(-140px) rotateX(40deg) translateZ(185px);">Tetto Isolante</div>
+                
+                <div class="info-point point-garden" id="point4" data-id="gardenSystem"></div>
+                <div class="point-label" style="transform: translateX(-200px) translateY(70px) translateZ(50px);">Giardino Smart</div>
+                
+                <div class="info-point point-pool" id="point5" data-id="poolSystem"></div>
+                <div class="point-label" style="transform: translateX(150px) translateY(70px) translateZ(50px);">Piscina Climatizzata</div>
+                
+                <div class="info-point point-garage" id="point6" data-id="garageSystem"></div>
+                <div class="point-label" style="transform: translateX(165px) translateY(30px) translateZ(205px);">Garage Automatico</div>
+                
+                <div class="info-point point-solar" id="point7" data-id="solarSystem"></div>
+                <div class="point-label" style="transform: translateX(80px) translateY(-148px) rotateX(40deg) translateZ(165px);">Pannelli Solari</div>
+                
+                <div class="info-point point-smart" id="point8" data-id="smartSystem"></div>
+                <div class="point-label" style="transform: translateX(0px) translateY(-20px) translateZ(0px);">Sistema Domotico</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pannello informativo -->
+    <div class="info-panel" id="infoPanel">
+        <div class="close-panel" id="closePanel">✕</div>
+        <h3 id="infoPanelTitle">Informazioni</h3>
+        <div id="infoPanelContent"></div>
+    </div>
+    
+    <!-- Controlli -->
+    <div class="controls">
+        <button id="resetView">↺ Vista iniziale</button>
+        <button id="toggleHUD">ⓘ Statistiche</button>
+    </div>
+    
+    <!-- Barra di stato -->
+    <div class="status-bar">
+        <div class="status-item" data-tooltip="Sistema operativo">OS: HoloOS 4.5</div>
+        <div class="status-item" data-tooltip="Versione software">Ver: 2.4.1</div>
+        <div class="status-item" id="mousePosition">Pos: X:0 Y:0 Z:0</div>
+        <div class="status-item" id="modelStatus">Stato: In attesa interazione</div>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
