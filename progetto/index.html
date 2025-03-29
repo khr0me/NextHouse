@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHome Control Center</title>
+    <!-- Collegamenti ai file CSS (predisposti ma non inclusi) -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <!-- Collegamenti ai font -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="main-navigation">
+            <div class="logo">
+                <h1>SmartHome</h1>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#dashboard" class="active">Dashboard</a></li>
+                <li><a href="#rooms">Stanze</a></li>
+                <li><a href="#scenes">Scenari</a></li>
+                <li><a href="#devices">Dispositivi</a></li>
+                <li><a href="#settings">Impostazioni</a></li>
+            </ul>
+            <div class="user-profile">
+                <img src="images/user-avatar.png" alt="User Profile">
+                <span>Benvenuto, Utente</span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="dashboard" class="dashboard-section">
+            <div class="dashboard-header">
+                <h2>Dashboard Casa</h2>
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-temperature-low"></i>
+                        <div class="stat-info">
+                            <span class="stat-value" id="temperature">22°C</span>
+                            <span class="stat-label">Temperatura</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-tint"></i>
+                        <div class="stat-info">
+                            <span class="stat-value" id="humidity">45%</span>
+                            <span class="stat-label">Umidità</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-lightbulb"></i>
+                        <div class="stat-info">
+                            <span class="stat-value" id="activeDevices">8/12</span>
+                            <span class="stat-label">Dispositivi Attivi</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-bolt"></i>
+                        <div class="stat-info">
+                            <span class="stat-value" id="energyConsumption">3.2 kWh</span>
+                            <span class="stat-label">Consumo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="favorite-controls">
+                <h3>Controlli Rapidi</h3>
+                <div class="control-grid">
+                    <div class="control-card">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Luci Soggiorno</span>
+                        <label class="switch">
+                            <input type="checkbox" id="livingRoomLights" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="control-card">
+                        <i class="fas fa-fan"></i>
+                        <span>Climatizzatore</span>
+                        <label class="switch">
+                            <input type="checkbox" id="airConditioner">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="control-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Sistema Allarme</span>
+                        <label class="switch">
+                            <input type="checkbox" id="securitySystem">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="control-card">
+                        <i class="fas fa-door-closed"></i>
+                        <span>Porta Principale</span>
+                        <label class="switch">
+                            <input type="checkbox" id="frontDoor">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rooms" class="rooms-section">
+            <h2>Stanze</h2>
+            <div class="rooms-grid">
+                <div class="room-card" data-room="livingRoom">
+                    <div class="room-icon">
+                        <i class="fas fa-couch"></i>
+                    </div>
+                    <h3>Soggiorno</h3>
+                    <div class="room-stats">
+                        <span><i class="fas fa-temperature-low"></i> 21°C</span>
+                        <span><i class="fas fa-lightbulb"></i> 3 Luci</span>
+                    </div>
+                </div>
+                <div class="room-card" data-room="kitchen">
+                    <div class="room-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Cucina</h3>
+                    <div class="room-stats">
+                        <span><i class="fas fa-temperature-low"></i> 23°C</span>
+                        <span><i class="fas fa-lightbulb"></i> 2 Luci</span>
+                    </div>
+                </div>
+                <div class="room-card" data-room="bedroom">
+                    <div class="room-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <h3>Camera da Letto</h3>
+                    <div class="room-stats">
+                        <span><i class="fas fa-temperature-low"></i> 20°C</span>
+                        <span><i class="fas fa-lightbulb"></i> 2 Luci</span>
+                    </div>
+                </div>
+                <div class="room-card" data-room="bathroom">
+                    <div class="room-icon">
+                        <i class="fas fa-bath"></i>
+                    </div>
+                    <h3>Bagno</h3>
+                    <div class="room-stats">
+                        <span><i class="fas fa-temperature-low"></i> 24°C</span>
+                        <span><i class="fas fa-lightbulb"></i> 1 Luce</span>
+                    </div>
+                </div>
+                <div class="room-card" data-room="office">
+                    <div class="room-icon">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h3>Studio</h3>
+                    <div class="room-stats">
+                        <span><i class="fas fa-temperature-low"></i> 22°C</span>
+                        <span><i class="fas fa-lightbulb"></i> 2 Luci</span>
+                    </div>
+                </div>
+                <div class="room-card add-room">
+                    <div class="room-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h3>Aggiungi Stanza</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="scenes" class="scenes-section">
+            <h2>Scenari</h2>
+            <div class="scenes-grid">
+                <div class="scene-card" data-scene="morning">
+                    <div class="scene-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <h3>Mattina</h3>
+                    <p>Apri tende, luci al 60%, temperatura 22°C</p>
+                    <button class="activate-scene">Attiva</button>
+                </div>
+                <div class="scene-card" data-scene="evening">
+                    <div class="scene-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <h3>Sera</h3>
+                    <p>Luci soffuse, chiudi tende, attiva sistema allarme perimetrale</p>
+                    <button class="activate-scene">Attiva</button>
+                </div>
+                <div class="scene-card" data-scene="away">
+                    <div class="scene-icon">
+                        <i class="fas fa-suitcase"></i>
+                    </div>
+                    <h3>Fuori Casa</h3>
+                    <p>Spegni tutte le luci, attiva allarme, abbassa temperatura</p>
+                    <button class="activate-scene">Attiva</button>
+                </div>
+                <div class="scene-card" data-scene="movie">
+                    <div class="scene-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3>Film</h3>
+                    <p>Luci soffuse, chiudi tende, accendi TV e sistema audio</p>
+                    <button class="activate-scene">Attiva</button>
+                </div>
+                <div class="scene-card add-scene">
+                    <div class="scene-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h3>Crea Scenario</h3>
+                    <button class="create-scene">Crea Nuovo</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="devices" class="devices-section">
+            <h2>Dispositivi</h2>
+            <div class="device-filters">
+                <button class="filter-btn active" data-filter="all">Tutti</button>
+                <button class="filter-btn" data-filter="lights">Luci</button>
+                <button class="filter-btn" data-filter="climate">Clima</button>
+                <button class="filter-btn" data-filter="security">Sicurezza</button>
+                <button class="filter-btn" data-filter="entertainment">Intrattenimento</button>
+            </div>
+            <div class="devices-list">
+                <div class="device-item" data-type="lights" data-room="livingRoom">
+                    <div class="device-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="device-info">
+                        <h4>Lampadario Soggiorno</h4>
+                        <span class="device-location">Soggiorno</span>
+                    </div>
+                    <div class="device-controls">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <input type="range" min="1" max="100" value="80" class="brightness-slider">
+                    </div>
+                </div>
+                <div class="device-item" data-type="climate" data-room="livingRoom">
+                    <div class="device-icon">
+                        <i class="fas fa-thermometer-half"></i>
+                    </div>
+                    <div class="device-info">
+                        <h4>Termostato Principale</h4>
+                        <span class="device-location">Soggiorno</span>
+                    </div>
+                    <div class="device-controls">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <div class="temperature-control">
+                            <button class="temp-btn temp-down">-</button>
+                            <span class="current-temp">22°C</span>
+                            <button class="temp-btn temp-up">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="device-item" data-type="security" data-room="entrance">
+                    <div class="device-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="device-info">
+                        <h4>Videocamera Ingresso</h4>
+                        <span class="device-location">Ingresso</span>
+                    </div>
+                    <div class="device-controls">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <button class="view-stream">Visualizza</button>
+                    </div>
+                </div>
+                <div class="device-item" data-type="entertainment" data-room="livingRoom">
+                    <div class="device-icon">
+                        <i class="fas fa-tv"></i>
+                    </div>
+                    <div class="device-info">
+                        <h4>Smart TV</h4>
+                        <span class="device-location">Soggiorno</span>
+                    </div>
+                    <div class="device-controls">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                        <button class="media-control">Controlli</button>
+                    </div>
+                </div>
+                <div class="device-item" data-type="lights" data-room="kitchen">
+                    <div class="device-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="device-info">
+                        <h4>Luce Cucina</h4>
+                        <span class="device-location">Cucina</span>
+                    </div>
+                    <div class="device-controls">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <input type="range" min="1" max="100" value="90" class="brightness-slider">
+                    </div>
+                </div>
+            </div>
+            <button class="add-device-btn">
+                <i class="fas fa-plus"></i> Aggiungi Dispositivo
+            </button>
+        </section>
+
+        <section id="settings" class="settings-section">
+            <h2>Impostazioni</h2>
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <div class="settings-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <h3>Profilo Utente</h3>
+                    <p>Gestisci le informazioni del tuo account</p>
+                </div>
+                <div class="settings-card">
+                    <div class="settings-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Configurazione Sistema</h3>
+                    <p>Impostazioni avanzate della casa</p>
+                </div>
+                <div class="settings-card">
+                    <div class="settings-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Gestione Utenti</h3>
+                    <p>Aggiungi o modifica gli utenti con accesso</p>
+                </div>
+                <div class="settings-card">
+                    <div class="settings-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3>Log Attività</h3>
+                    <p>Visualizza la cronologia delle attività</p>
+                </div>
+                <div class="settings-card">
+                    <div class="settings-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Notifiche</h3>
+                    <p>Gestisci le impostazioni di notifica</p>
+                </div>
+                <div class="settings-card">
+                    <div class="settings-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Sicurezza</h3>
+                    <p>Impostazioni di sicurezza e privacy</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>SmartHome</h2>
+                <p>La tua casa intelligente, sempre con te</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Supporto</h4>
+                    <ul>
+                        <li><a href="#">Guida</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contattaci</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Risorse</h4>
+                    <ul>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Compatibilità</a></li>
+                        <li><a href="#">Documentazione API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legale</h4>
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Termini di Servizio</a></li>
+                        <li><a href="#">Cookie</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartHome. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <!-- Collegamenti ai file JavaScript (predisposti ma non inclusi) -->
+    <script src="script.js"></script>
+</body>
+</html>
