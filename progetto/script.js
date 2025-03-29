@@ -1,6 +1,6 @@
 /**
- * SmartHome Control Center - Script Principale (Versione Concisa)
- * Versione: 1.0.0
+ * SmartHome Control Center - Script Principale
+ * Versione: 2.0.0
  */
 
 // Namespace principale
@@ -11,17 +11,19 @@ const SmartHome = {
         simulationSpeed: 1000,
         notifications: true,
         debugMode: false,
-        temperatureUnit: 'C'
+        temperatureUnit: 'C',
+        defaultTheme: 'light' // Nuova impostazione: tema predefinito (light o dark)
     },
     
     // Stato del sistema
     state: {
         isInitialized: false,
-        activeView: 'dashboard',
+        activeView: 'home', // Impostato su 'home' come vista iniziale
         deviceStatus: {},
         sceneStatus: {},
         temperatureTrend: 'stable',
-        dayMode: true
+        dayMode: true,
+        theme: localStorage.getItem('theme') || 'light'
     },
     
     // Cache del DOM
@@ -30,15 +32,24 @@ const SmartHome = {
     // Inizializzazione
     init: function() {
         if (this.state.isInitialized) return;
-        console.log('Inizializzazione SmartHome Control Center...');
+        console.log('Inizializzazione SmartHome Control Center 2.0...');
         
         this.cacheElements();
         this.setupEventListeners();
         this.startDataSimulation();
-        this.addRoomHoverDetails(); // Nuova funzione per aggiungere dettagli hover alle stanze
+        this.addRoomHoverDetails();
+        this.setupDataCharts();
+        this.applyTheme();
         
         this.state.isInitialized = true;
-        this.loadView('dashboard');
+        
+        // Determina quale vista caricare in base all'hash dell'URL
+        const hash = window.location.hash;
+        if (hash) {
+            this.loadView(hash.substring(1));
+        } else {
+            this.loadView('home');
+        }
         
         console.log('SmartHome Control Center inizializzato con successo!');
         this.showWelcomeNotification();
@@ -52,6 +63,12 @@ const SmartHome = {
             mainContent: document.querySelector('main'),
             navToggle: document.getElementById('navToggle'),
             navMenu: document.querySelector('.nav-menu'),
+            
+            // Home
+            homeSection: document.getElementById('home'),
+            heroDashboardBtn: document.querySelector('.hero-buttons .btn-primary'),
+            heroAddDeviceBtn: document.querySelector('.hero-buttons .btn-secondary'),
+            quickAccessCards: document.querySelectorAll('.quick-access-card'),
             
             // Dashboard
             temperatureDisplay: document.getElementById('temperature'),
@@ -76,7 +93,8 @@ const SmartHome = {
             roomsGrid: document.querySelector('.rooms-grid'),
             scenesGrid: document.querySelector('.scenes-grid'),
             devicesList: document.querySelector('.devices-list'),
-            deviceFilters: document.querySelector('.device-filters')
+            deviceFilters: document.querySelector('.device-filters'),
+            chartContainer: document.querySelector('.chart-container')
         };
     },
     
@@ -91,6 +109,9 @@ const SmartHome = {
                 const targetView = this.getAttribute('href').substring(1);
                 self.loadView(targetView);
                 
+                // Aggiorna l'URL senza ricaricare la pagina
+                window.history.pushState(null, null, `#${targetView}`);
+                
                 self.elements.navLinks.forEach(navLink => navLink.classList.remove('active'));
                 this.classList.add('active');
                 
@@ -100,7 +121,57 @@ const SmartHome = {
             });
         });
         
-        // Aggiungi questi alla funzione setupEventListeners esistente
+        // Bottoni nella hero section
+        if (this.elements.heroDashboardBtn) {
+            this.elements.heroDashboardBtn.addEventListener('click', function() {
+                self.loadView('dashboard');
+                window.history.pushState(null, null, '#dashboard');
+                
+                self.elements.navLinks.forEach(navLink => {
+                    if (navLink.getAttribute('href') === '#dashboard') {
+                        navLink.classList.add('active');
+                    } else {
+                        navLink.classList.remove('active');
+                    }
+                });
+            });
+        }
+        
+        if (this.elements.heroAddDeviceBtn) {
+            this.elements.heroAddDeviceBtn.addEventListener('click', function() {
+                self.loadView('devices');
+                window.history.pushState(null, null, '#devices');
+                self.addNewDevice();
+                
+                self.elements.navLinks.forEach(navLink => {
+                    if (navLink.getAttribute('href') === '#devices') {
+                        navLink.classList.add('active');
+                    } else {
+                        navLink.classList.remove('active');
+                    }
+                });
+            });
+        }
+        
+        // Schede di accesso rapido
+        if (this.elements.quickAccessCards) {
+            this.elements.quickAccessCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const targetView = this.getAttribute('href').substring(1);
+                    self.loadView(targetView);
+                    window.history.pushState(null, null, `#${targetView}`);
+                    
+                    self.elements.navLinks.forEach(navLink => {
+                        if (navLink.getAttribute('href') === `#${targetView}`) {
+                            navLink.classList.add('active');
+                        } else {
+                            navLink.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        }
+        
         // Aggiungi stanza
         document.querySelector('.room-card.add-room').addEventListener('click', () => {
             this.createNewRoom();
@@ -161,8 +232,6 @@ const SmartHome = {
             });
         }
         
-        // Rimuoviamo l'event handler per il click sulle stanze dato che ora usiamo hover
-        
         // Scenari
         const sceneButtons = document.querySelectorAll('.activate-scene');
         sceneButtons.forEach(button => {
@@ -219,7 +288,40 @@ const SmartHome = {
                 const newTemp = button.classList.contains('temp-up') ? currentTemp + 1 : currentTemp - 1;
                 
                 tempDisplay.textContent = `${newTemp}°C`;
+                
+                // Aggiornare anche la temperatura ambientale sul dashboard quando viene modificata
+                if (deviceItem.getAttribute('data-type') === 'climate' && deviceItem.getAttribute('data-room') === 'livingRoom') {
+                    setTimeout(() => {
+                        self.elements.temperatureDisplay.textContent = `${newTemp}°C`;
+                    }, 1000);
+                }
             });
+        });
+        
+        // Toggle tema scuro/chiaro
+        const themeToggle = document.createElement('button');
+        themeToggle.className = 'theme-toggle';
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        document.body.appendChild(themeToggle);
+        
+        themeToggle.addEventListener('click', function() {
+            self.toggleTheme();
+        });
+        
+        // Ascoltatore eventi per il cambio hash dell'URL
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash;
+            if (hash) {
+                self.loadView(hash.substring(1));
+                
+                self.elements.navLinks.forEach(navLink => {
+                    if (navLink.getAttribute('href') === hash) {
+                        navLink.classList.add('active');
+                    } else {
+                        navLink.classList.remove('active');
+                    }
+                });
+            }
         });
     },
     
@@ -255,6 +357,14 @@ const SmartHome = {
             const newEnergy = Math.max(0.5, Math.round((currentEnergy + energyChange) * 100) / 100);
             self.elements.energyConsumptionDisplay.textContent = `${newEnergy.toFixed(1)} kWh`;
             
+            // Simulazione dispositivi attivi
+            const totalDevices = 12;
+            const activeDevices = Math.floor(Math.random() * 3) + 6; // Da 6 a 8 dispositivi attivi
+            self.elements.activeDevicesDisplay.textContent = `${activeDevices}/${totalDevices}`;
+            
+            // Aggiornamento grafico consumi (se implementato)
+            self.updateConsumptionChart(newEnergy);
+            
             // Genera notifiche casuali
             if (Math.random() < 0.01) {
                 self.generateRandomNotification();
@@ -270,9 +380,115 @@ const SmartHome = {
         };
     },
     
+    // Configura e visualizza i grafici per i dati
+    setupDataCharts: function() {
+        // Verifica se il contenitore per i grafici esiste
+        if (!this.elements.chartContainer) return;
+        
+        // Qui puoi implementare la logica per il grafico dei consumi
+        // Questo è un esempio semplificato
+        this.chartData = {
+            labels: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+            values: [2.8, 3.1, 2.9, 3.4, 3.0, 2.7, 3.2]
+        };
+        
+        // Crea HTML per il grafico placeholder
+        this.elements.chartContainer.innerHTML = `
+            <div class="chart-placeholder">
+                <p>Consumo energetico settimanale: media 3.0 kWh</p>
+                <div class="chart-bars">
+                    ${this.chartData.values.map((value, index) => `
+                        <div class="chart-bar-container">
+                            <div class="chart-bar" style="height: ${value * 20}px"></div>
+                            <div class="chart-label">${this.chartData.labels[index]}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        
+        // Aggiungi stile per le barre del grafico
+        const style = document.createElement('style');
+        style.textContent = `
+            .chart-bars {
+                display: flex;
+                justify-content: space-around;
+                align-items: flex-end;
+                height: 200px;
+                margin-top: 20px;
+            }
+            .chart-bar-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .chart-bar {
+                width: 30px;
+                background: linear-gradient(to top, #6366f1, #22d3ee);
+                border-radius: 4px 4px 0 0;
+                margin: 0 5px;
+            }
+            .chart-label {
+                margin-top: 8px;
+                font-size: 12px;
+                color: var(--text-muted);
+            }
+        `;
+        document.head.appendChild(style);
+    },
+    
+    // Aggiorna il grafico dei consumi
+    updateConsumptionChart: function(newValue) {
+        if (!this.chartData || !this.elements.chartContainer) return;
+        
+        // Aggiorna i dati del grafico
+        this.chartData.values.shift();
+        this.chartData.values.push(newValue);
+        
+        // Calcola la media
+        const average = (this.chartData.values.reduce((a, b) => a + b, 0) / this.chartData.values.length).toFixed(1);
+        
+        // Aggiorna il testo della media
+        const chartText = this.elements.chartContainer.querySelector('p');
+        if (chartText) {
+            chartText.textContent = `Consumo energetico settimanale: media ${average} kWh`;
+        }
+        
+        // Aggiorna le barre del grafico
+        const bars = this.elements.chartContainer.querySelectorAll('.chart-bar');
+        if (bars.length === this.chartData.values.length) {
+            bars.forEach((bar, index) => {
+                bar.style.height = `${this.chartData.values[index] * 20}px`;
+            });
+        }
+    },
+    
+    // Applica il tema (chiaro/scuro)
+    applyTheme: function() {
+        if (this.state.theme === 'dark') {
+            document.body.classList.add('night-mode');
+            document.querySelector('.theme-toggle i').className = 'fas fa-sun';
+        } else {
+            document.body.classList.remove('night-mode');
+            document.querySelector('.theme-toggle i').className = 'fas fa-moon';
+        }
+    },
+    
+    // Toggle tema chiaro/scuro
+    toggleTheme: function() {
+        this.state.theme = this.state.theme === 'light' ? 'dark' : 'light';
+        localStorage.setItem('theme', this.state.theme);
+        this.applyTheme();
+        
+        // Mostra notifica di cambio tema
+        const themeText = this.state.theme === 'dark' ? 'scuro' : 'chiaro';
+        this.showNotification('Tema', `Tema ${themeText} attivato`, 'info');
+    },
+    
     // Carica vista specifica
     loadView: function(viewName) {
         const allSections = [
+            this.elements.homeSection,
             this.elements.dashboardSection,
             this.elements.roomsSection,
             this.elements.scenesSection,
@@ -287,6 +503,9 @@ const SmartHome = {
         
         // Mostra la sezione richiesta
         switch (viewName) {
+            case 'home':
+                if (this.elements.homeSection) this.elements.homeSection.style.display = 'block';
+                break;
             case 'dashboard':
                 if (this.elements.dashboardSection) this.elements.dashboardSection.style.display = 'block';
                 break;
@@ -303,7 +522,7 @@ const SmartHome = {
                 if (this.elements.settingsSection) this.elements.settingsSection.style.display = 'block';
                 break;
             default:
-                if (this.elements.dashboardSection) this.elements.dashboardSection.style.display = 'block';
+                if (this.elements.homeSection) this.elements.homeSection.style.display = 'block';
                 break;
         }
         
@@ -367,6 +586,11 @@ const SmartHome = {
     setBrightness: function(deviceId, brightness) {
         // Logica per impostare la luminosità
         console.log(`Luminosità di ${deviceId} impostata a ${brightness}`);
+        
+        // Mostra notifica solo se la luminosità cambia significativamente (evita spam)
+        if (brightness % 20 === 0) {
+            this.showNotification('Luminosità', `Luminosità impostata al ${brightness}%`, 'info');
+        }
     },
     
     // Filtra dispositivi per tipo
@@ -415,17 +639,16 @@ const SmartHome = {
         return true;
     },
     
-    // NUOVA FUNZIONE: Aggiunge dettagli hover alle stanze
+    // Aggiunge dettagli hover alle stanze
     addRoomHoverDetails: function() {
         const roomCards = document.querySelectorAll('.room-card:not(.add-room)');
         
         roomCards.forEach(card => {
+            // Verifica se la card ha già i dettagli hover
+            if (card.querySelector('.room-detail-hover')) return;
+            
             const roomId = card.getAttribute('data-room');
             const roomName = card.querySelector('h3').textContent;
-            
-            // Crea contenitore per i dettagli hover
-            const detailsContainer = document.createElement('div');
-            detailsContainer.className = 'room-detail-hover';
             
             // Ottieni dati per questa stanza
             let temperature = '22°C';
@@ -438,57 +661,59 @@ const SmartHome = {
                 temperature = tempDisplay.textContent.split(' ')[1];
             }
             
-            // Genera il contenuto HTML per i dettagli hover
-            detailsContainer.innerHTML = `
-                <h3>${roomName}</h3>
-                <div class="room-stats-detail">
-                    <div class="stat-item">
-                        <i class="fas fa-temperature-low"></i>
-                        <span>Temperatura</span>
-                        <strong>${temperature}</strong>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fas fa-tint"></i>
-                        <span>Umidità</span>
-                        <strong>${humidity}</strong>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fas fa-lightbulb"></i>
-                        <span>Illuminazione</span>
-                        <strong>${brightness}</strong>
-                    </div>
-                </div>
-                <div class="room-devices">
-                    <h4>Dispositivi</h4>
-                    <div class="device-grid">
-                        <div class="device-control">
-                            <div class="device-name">Lampadario</div>
-                            <div class="device-toggle">
-                                <label class="switch">
-                                    <input type="checkbox" checked>
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
+            // Crea dettagli hover se non presenti
+            if (!card.querySelector('.room-detail-hover')) {
+                // Genera il contenuto HTML per i dettagli hover
+                const detailsContainer = document.createElement('div');
+                detailsContainer.className = 'room-detail-hover';
+                
+                detailsContainer.innerHTML = `
+                    <h3>${roomName}</h3>
+                    <div class="room-stats-detail">
+                        <div class="stat-item">
+                            <i class="fas fa-temperature-low"></i>
+                            <span>Temperatura</span>
+                            <strong>${temperature}</strong>
                         </div>
-                        <div class="device-control">
-                            <div class="device-name">Presa Smart</div>
-                            <div class="device-toggle">
-                                <label class="switch">
-                                    <input type="checkbox">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
+                        <div class="stat-item">
+                            <i class="fas fa-tint"></i>
+                            <span>Umidità</span>
+                            <strong>${humidity}</strong>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Illuminazione</span>
+                            <strong>${brightness}</strong>
                         </div>
                     </div>
-                </div>
-            `;
-            
-            // Aggiungi il contenitore alla card
-            card.appendChild(detailsContainer);
-            
-            // Rimuovi l'event listener click originale sostituendo l'elemento
-            const clone = card.cloneNode(true);
-            card.parentNode.replaceChild(clone, card);
+                    <div class="room-devices">
+                        <h4>Dispositivi</h4>
+                        <div class="device-grid">
+                            <div class="device-control">
+                                <div class="device-name">Lampadario</div>
+                                <div class="device-toggle">
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="device-control">
+                                <div class="device-name">Presa Smart</div>
+                                <div class="device-toggle">
+                                    <label class="switch">
+                                        <input type="checkbox">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Aggiungi il contenitore alla card
+                card.appendChild(detailsContainer);
+            }
         });
     },
     
@@ -499,7 +724,13 @@ const SmartHome = {
         
         if (shouldBeDayMode !== this.state.dayMode) {
             this.state.dayMode = shouldBeDayMode;
-            document.body.classList.toggle('night-mode', !shouldBeDayMode);
+            
+            // Se è abilitato il tema automatico, cambia il tema
+            if (localStorage.getItem('autoTheme') === 'true') {
+                this.state.theme = shouldBeDayMode ? 'light' : 'dark';
+                localStorage.setItem('theme', this.state.theme);
+                this.applyTheme();
+            }
         }
     },
     
@@ -1004,6 +1235,18 @@ const SmartHome = {
                 const deviceId = `${deviceRoom}_${deviceType}_${deviceName.toLowerCase().replace(/\s+/g, '')}`;
                 this.toggleDevice(deviceId, switchInput.checked);
             });
+        }
+        
+        // Incrementa il contatore delle luci nella stanza corrispondente
+        if (deviceType === 'lights') {
+            const roomCard = document.querySelector(`.room-card[data-room="${deviceRoom}"]`);
+            if (roomCard) {
+                const lightsCountElement = roomCard.querySelector('.room-stats span:nth-child(2)');
+                if (lightsCountElement) {
+                    const currentCount = parseInt(lightsCountElement.textContent.match(/\d+/)[0]);
+                    lightsCountElement.innerHTML = `<i class="fas fa-lightbulb"></i> ${currentCount + 1} Luci`;
+                }
+            }
         }
     }
 };
