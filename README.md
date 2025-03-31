@@ -11,9 +11,15 @@ dei dispositivi della casa.
 
 
 ## Che strumenti abbiamo usato
-Per raggiungere il nostro obiettivo, abbiamo utilizzato tecnologie web come HTML, CSS e JavaScript per lo sviluppo dell'interfaccia grafica e Cisco Packet Tracer per la simulazione della rete domestica.
+Per raggiungere il nostro obiettivo, abbiamo utilizzato tecnologie web come HTML, CSS e JavaScript per lo sviluppo dell'interfaccia grafica e Cisco Packet Tracer per la simulazione della rete domestica. Inoltre, sono stati utilizzati diversi componenti pre-costruiti per ottimizzare la creazione dello stile CSS (giustificando il peso del file) e permettendo la versatilità del sito 
+stesso e della responsiveness. Alcuni componenti sono stati presi dai siti [CSS Components](https://onsen.io/) e [UI Verse](https://uiverse.io/), mentre i restanti (la maggior parte) sono stati
+realizzati a mano.
+
+
+## Simulazione della rete
 Per esplorare la rete della casa, è sufficiente accedere alla cartella "Simulazione Rete", dove troverai il file della simulazione (.pka), apribile con Cisco Packet Tracer.
 Nella stessa cartella è disponibile anche un'immagine della rete per una rapida visualizzazione.
+LA REALIZZAZIONE DELLA SIMULAZIONE È ANCORA IN FASE DI SVILUPPO, SARÀ DISPONIBILE A BREVE.
 
 
 ## Info
