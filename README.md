@@ -23,6 +23,7 @@ LA REALIZZAZIONE DELLA SIMULAZIONE È ANCORA IN FASE DI SVILUPPO, SARÀ DISPONIB
 
 
 ## Info
+Puoi visualizzare il sito direttamente dal seguente indirizzo: [Next House Domotica](https://nexthousedomotica.vercel.app/)
 Hai bisogno di qualche informazione in specifico riguardo il progetto, o necessiti di contattarci? Non esitare ad inviare una mail al seguente indirizzo:
 nexthousedomotica@gmail.com
 
