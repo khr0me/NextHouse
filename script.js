@@ -450,15 +450,15 @@ const SmartHome = {
       );
       self.elements.humidityDisplay.textContent = `${newHumidity}%`;
 
-      // Simulazione consumo energetico
-      const energyChange = Math.random() * 0.2 - 0.1;
-      const currentEnergy = parseFloat(
-        self.elements.energyConsumptionDisplay.textContent
-      );
-      const newEnergy = Math.max(
-        0.5,
-        Math.round((currentEnergy + energyChange) * 100) / 100
-      );
+      // Simulazione variazioni di consumo energetico
+      const energyChange = Math.random() * 0.2 - 0.1; // Varia tra -0.1 e +0.1
+      const currentEnergy =
+        parseFloat(self.elements.energyConsumptionDisplay.textContent) || 2; // Default a 2 kWh se non valido
+      let newEnergy = Math.round((currentEnergy + energyChange) * 100) / 100;
+
+      // Mantieni il valore tra 1 e 3 kWh
+      newEnergy = Math.min(3, Math.max(1, newEnergy));
+
       self.elements.energyConsumptionDisplay.textContent = `${newEnergy.toFixed(
         1
       )} kWh`;
@@ -491,8 +491,7 @@ const SmartHome = {
     // Verifica se il contenitore per i grafici esiste
     if (!this.elements.chartContainer) return;
 
-    // Qui puoi implementare la logica per il grafico dei consumi
-    // Questo è un esempio semplificato
+    // logica per il grafico dei consumi
     this.chartData = {
       labels: ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"],
       values: [2.8, 3.1, 2.9, 3.4, 3.0, 2.7, 3.2],
