@@ -1879,6 +1879,176 @@ footer::before {
   }
 }
 
+/* Simulazione Section */
+.simulation-section {
+  background-color: var(--background-color);
+  padding: 2rem 0;
+}
+
+.simulation-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.simulation-controls {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.simulation-controls h3 {
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+.control-group {
+  margin-bottom: 1.5rem;
+}
+
+.control-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.sim-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 8px;
+  border-radius: 5px;
+  background: var(--border-color);
+  outline: none;
+  margin-bottom: 0.5rem;
+}
+
+.sim-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.sim-value {
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.simulation-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn-sim {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-sim.start {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.btn-sim.stop {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.btn-sim.reset {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.btn-sim:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.btn-sim:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.simulation-data {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.simulation-data h3 {
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+.sim-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.sim-stat {
+  background-color: rgba(99, 102, 241, 0.05);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sim-stat i {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+
+.averages-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+}
+
+.average-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.average-item:last-child {
+  border-bottom: none;
+}
+
+.average-date {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.average-values {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
 /* Night Mode - può essere attivato aggiungendo la classe 'night-mode' al body */
 body.night-mode {
   --background-color: #0f172a;
@@ -1997,3 +2167,4 @@ body.night-mode .btn-connect {
 body.night-mode .btn-connect:hover {
   background-color: #0a7ca6;
 }
+

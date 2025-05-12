@@ -47,6 +47,9 @@
             <a href="#devices"><i class="fas fa-plug"></i> Dispositivi</a>
           </li>
           <li>
+            <a href="#simulation"><i class="fas fa-cogs"></i> Simulazione</a>
+          </li>
+          <li>
             <a href="#settings"><i class="fas fa-cog"></i> Impostazioni</a>
           </li>
         </ul>
@@ -135,9 +138,9 @@
               <i class="fas fa-plug"></i>
               <span>Dispositivi</span>
             </a>
-            <a href="#settings" class="quick-access-card">
-              <i class="fas fa-cog"></i>
-              <span>Impostazioni</span>
+            <a href="#simulation" class="quick-access-card">
+              <i class="fas fa-cogs"></i>
+              <span>Simulazione</span>
             </a>
           </div>
         </div>
@@ -658,6 +661,74 @@
         <button class="add-device-btn">
           <i class="fas fa-plus"></i> Aggiungi Dispositivo
         </button>
+      </section>
+
+      <section id="simulation" class="simulation-section">
+        <h2>Simulatore Dispositivi</h2>
+        <div class="simulation-container">
+          <div class="simulation-controls">
+            <h3>Controlli Simulazione</h3>
+            <div class="control-grid">
+              <div class="control-group">
+                <label for="lightQuantity">Numero Luci</label>
+                <input type="range" id="lightQuantity" min="1" max="20" value="8" class="sim-slider">
+                <span class="sim-value">8</span>
+              </div>
+              <div class="control-group">
+                <label for="tempVariation">Variazione Temperatura (±°C)</label>
+                <input type="range" id="tempVariation" min="0" max="5" value="1" class="sim-slider" step="0.5">
+                <span class="sim-value">1</span>
+              </div>
+              <div class="control-group">
+                <label for="humidityVariation">Variazione Umidità (±%)</label>
+                <input type="range" id="humidityVariation" min="0" max="10" value="3" class="sim-slider">
+                <span class="sim-value">3</span>
+              </div>
+              <div class="control-group">
+                <label for="energyBase">Consumo Base (kWh)</label>
+                <input type="range" id="energyBase" min="1" max="5" value="2.5" class="sim-slider" step="0.1">
+                <span class="sim-value">2.5</span>
+              </div>
+            </div>
+            <div class="simulation-actions">
+              <button id="startSim" class="btn-sim start">Avvia Simulazione</button>
+              <button id="stopSim" class="btn-sim stop" disabled>Ferma Simulazione</button>
+              <button id="resetSim" class="btn-sim reset">Reset Media</button>
+            </div>
+          </div>
+          <div class="simulation-data">
+            <h3>Dati Simulazione</h3>
+            <div class="sim-stats">
+              <div class="sim-stat">
+                <i class="fas fa-chart-line"></i>
+                <div class="stat-info">
+                  <span class="stat-label">Inserimenti</span>
+                  <span id="insertCount" class="stat-value">0</span>
+                </div>
+              </div>
+              <div class="sim-stat">
+                <i class="fas fa-calculator"></i>
+                <div class="stat-info">
+                  <span class="stat-label">Media Settimanale</span>
+                  <span id="weeklyAverage" class="stat-value">-</span>
+                </div>
+              </div>
+              <div class="sim-stat">
+                <i class="fas fa-clock"></i>
+                <div class="stat-info">
+                  <span class="stat-label">Prossima Media</span>
+                  <span id="nextAverage" class="stat-value">7</span>
+                </div>
+              </div>
+            </div>
+            <div class="weekly-averages">
+              <h4>Storico Medie Settimanali</h4>
+              <div id="averagesList" class="averages-list">
+                <p>Nessuna media calcolata</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section id="settings" class="settings-section">
