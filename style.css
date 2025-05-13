@@ -2117,6 +2117,10 @@ body.night-mode .form-group textarea:focus {
   border-color: var(--primary-color);
 }
 
+body.night-mode .room-detail-hover {
+  background-color: rgba(30, 41, 59, 0.97);
+}
+
 .btn-connect {
   background-color: var(--accent-color);
   color: white;
