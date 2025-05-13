@@ -23,7 +23,7 @@ pulseStyle.textContent = `
 document.head.appendChild(pulseStyle);
 
 // Namespace principale
-const NextHouse = {
+const SmartHome = {
   // Configurazione base
   config: {
     updateInterval: 5000,
@@ -1656,5 +1656,5 @@ const NextHouse = {
 
 // Inizializzazione all'avvio della pagina
 document.addEventListener("DOMContentLoaded", function () {
-  NextHouse.init();
+  SmartHome.init();
 });
