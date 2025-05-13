@@ -83,7 +83,7 @@
             </div>
           </div>
           <div class="hero-image">
-            <img src="img/logo1.png" alt="Smart Home Illustration" />
+            <img src="img/logo.png" alt="Smart Home Illustration" />
           </div>
         </div>
 
@@ -671,28 +671,62 @@
             <div class="control-grid">
               <div class="control-group">
                 <label for="lightQuantity">Numero Luci</label>
-                <input type="range" id="lightQuantity" min="1" max="20" value="8" class="sim-slider">
+                <input
+                  type="range"
+                  id="lightQuantity"
+                  min="1"
+                  max="20"
+                  value="8"
+                  class="sim-slider"
+                />
                 <span class="sim-value">8</span>
               </div>
               <div class="control-group">
                 <label for="tempVariation">Variazione Temperatura (±°C)</label>
-                <input type="range" id="tempVariation" min="0" max="5" value="1" class="sim-slider" step="0.5">
+                <input
+                  type="range"
+                  id="tempVariation"
+                  min="0"
+                  max="5"
+                  value="1"
+                  class="sim-slider"
+                  step="0.5"
+                />
                 <span class="sim-value">1</span>
               </div>
               <div class="control-group">
                 <label for="humidityVariation">Variazione Umidità (±%)</label>
-                <input type="range" id="humidityVariation" min="0" max="10" value="3" class="sim-slider">
+                <input
+                  type="range"
+                  id="humidityVariation"
+                  min="0"
+                  max="10"
+                  value="3"
+                  class="sim-slider"
+                />
                 <span class="sim-value">3</span>
               </div>
               <div class="control-group">
                 <label for="energyBase">Consumo Base (kWh)</label>
-                <input type="range" id="energyBase" min="1" max="5" value="2.5" class="sim-slider" step="0.1">
+                <input
+                  type="range"
+                  id="energyBase"
+                  min="1"
+                  max="5"
+                  value="2.5"
+                  class="sim-slider"
+                  step="0.1"
+                />
                 <span class="sim-value">2.5</span>
               </div>
             </div>
             <div class="simulation-actions">
-              <button id="startSim" class="btn-sim start">Avvia Simulazione</button>
-              <button id="stopSim" class="btn-sim stop" disabled>Ferma Simulazione</button>
+              <button id="startSim" class="btn-sim start">
+                Avvia Simulazione
+              </button>
+              <button id="stopSim" class="btn-sim stop" disabled>
+                Ferma Simulazione
+              </button>
               <button id="resetSim" class="btn-sim reset">Reset Media</button>
             </div>
           </div>

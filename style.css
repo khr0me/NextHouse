@@ -13,6 +13,7 @@
   --border-color: #e2e8f0;
   --background-color: #f8fafc;
   --card-background: #ffffff;
+  --card-bg-hover: #f0f0f0;
 
   /* Ombre e stili comuni */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -30,6 +31,10 @@
 
   --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   --header-height: 70px;
+}
+
+[data-theme="dark"] {
+  --card-bg-dark: #1e1e1e;
 }
 
 /* Reset e stile di base */
@@ -909,6 +914,7 @@ input:checked + .slider:before {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.8rem;
+  width: 1200px;
 }
 
 .scene-card {
@@ -1185,6 +1191,7 @@ input:checked + .slider:before {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.8rem;
+  width: 1200px;
 }
 
 .settings-card {
@@ -2167,4 +2174,3 @@ body.night-mode .btn-connect {
 body.night-mode .btn-connect:hover {
   background-color: #0a7ca6;
 }
-
